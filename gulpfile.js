@@ -15,7 +15,7 @@ var config = {
 	paths: {
 		html: './src/*.html',
 		js: './src/**/*.js',
-		images: './src/images/*',
+		images: './src/assets/images/*',
 		css: [
       		'node_modules/bootstrap/dist/css/bootstrap.min.css',
       		'node_modules/bootstrap/dist/css/bootstrap-theme.min.css',
@@ -67,7 +67,7 @@ gulp.task('css', function() {
 // Note that I could even optimize my images here
 gulp.task('images', function () {
     gulp.src(config.paths.images)
-        .pipe(gulp.dest(config.paths.dist + '/images'))
+        .pipe(gulp.dest(config.paths.dist + '/assets/images'))
         .pipe(connect.reload());
 
     //publish favicon
