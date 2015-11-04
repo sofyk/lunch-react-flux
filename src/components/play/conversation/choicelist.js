@@ -1,17 +1,28 @@
 "use strict";
 
 var React = require('react');
+var ChoiceItem = require('./choiceitem');
 
 var ChoiceList = React.createClass({
   propTypes: {
-    //convostate: React.PropTypes.array.isRequired
+    currentspeaker: React.PropTypes.object.isRequired,
+    currentchoices: React.PropTypes.object.isRequired
   },
 
   render: function() {
+    var createChoiceItem = function(choice){
+      return (
+        <ChoiceItem key={choice.get('id')} choiceitem={choice} />
+      );
+    };
 
     return (
-      <div>
-      </div>
+        <div>
+          <h3>{this.props.currentspeaker.get('name')}:</h3>
+          <div className="choicelist-body">
+            {this.props.currentchoices.map(createChoiceItem, this)}
+          </div>
+        </div>
     );
   }
 });

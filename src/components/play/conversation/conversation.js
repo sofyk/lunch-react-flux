@@ -26,13 +26,18 @@ var Conversation = React.createClass({
   },
 
   render: function() {
+    var currentSpeaker = this.state.conversation.get('currentSpeaker');
+    var currentNode = this.state.conversation.get('currentNode');
+    var currentChoices = this.state.conversation.get('currentChoices');
 
     return (
       <div>
-        <ConvoBlock currentnode={this.state.conversation.currentNode} />
-        <ChoiceList 
-          currentspeaker={this.state.conversation.currentSpeaker}
-          currentchoices={this.state.conversation.currentChoices} />
+        <ConvoBlock
+          currentspeaker={currentSpeaker}
+          currentnode={currentNode} />
+        <ChoiceList
+          currentspeaker={currentSpeaker}
+          currentchoices={currentChoices} />
       </div>
     );
   }

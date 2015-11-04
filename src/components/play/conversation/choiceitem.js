@@ -4,13 +4,16 @@ var React = require('react');
 
 var ChoiceItem = React.createClass({
   propTypes: {
-    //convostate: React.PropTypes.array.isRequired
+    choiceitem: React.PropTypes.object.isRequired
   },
 
   render: function() {
 
     return (
-      <div>
+      <div className='row'>
+        <div className='btn btn-link'>
+          <b>[&nbsp;{this.props.choiceitem.get('text')}&nbsp;]</b>
+        </div>
       </div>
     );
   }

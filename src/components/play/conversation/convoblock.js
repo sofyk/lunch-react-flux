@@ -1,10 +1,12 @@
 "use strict";
 
 var React = require('react');
+var QuoteList = require('./quotelist');
 
 var ConvoBlock = React.createClass({
   propTypes: {
-    //convostate: React.PropTypes.array.isRequired
+    currentspeaker: React.PropTypes.object.isRequired,
+    currentnode: React.PropTypes.object.isRequired
   },
 
   render: function() {
