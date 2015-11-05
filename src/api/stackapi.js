@@ -13,7 +13,7 @@ var _convoNodes = Immutable.Map([]);
 var _quotes = Immutable.Map([]);
 var _conversation = Immutable.Map({
   currentSpeaker: '',
-  currentNode: Immutable.List([]),
+  currentNode: Immutable.Map({}),
   currentChoices: Immutable.List([]),
   pathIdsStack: Immutable.Stack([]),
   convoStacks: Immutable.List([])
@@ -50,7 +50,7 @@ var _parseData = function _parseData() {
     initialstate.currentSpeaker);
   _conversation = _conversation.set(
     'currentNode', 
-    Immutable.List(initialstate.currentNode));
+    Immutable.Map(initialstate.currentNode));
 
   _parseSpeakers(_getSpeakers());
 

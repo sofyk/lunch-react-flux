@@ -4,5 +4,5 @@ var keyMirror = require('react/lib/keyMirror');
 
 module.exports = keyMirror({
 	INITIALIZE: null,
-  CHOOSE_NODE:null
+  CHOOSE_NODE: null
 });
