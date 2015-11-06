@@ -18,8 +18,10 @@ var ChoiceList = React.createClass({
 
     return (
         <div>
-          <h3>{this.props.currentspeaker.get('name')}:</h3>
-          <div className="choicelist-body">
+          <div className='col-xs-3 text-right'>
+            <b>{this.props.currentspeaker.get('name')}</b>
+          </div>
+          <div className='col-xs-9 text-left choicelist-body'>
             {this.props.currentchoices.map(createChoiceItem, this)}
           </div>
         </div>

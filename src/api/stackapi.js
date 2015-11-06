@@ -89,7 +89,8 @@ var _createNode = function _createNode(convoNode, index, stackArray) {
   var newNode = Immutable.Map({
     id: id,
     entryBundles: Immutable.Map({}),
-    mainBundle: Immutable.List([])
+    mainBundle: Immutable.List([]),
+    nextSpeaker: convoNode.nextSpeaker
   });
 
   convoNode.entryBundles.forEach(_parseEntryBundle);

@@ -17,7 +17,8 @@ module.exports = {
     }, {
       "speaker": "speaker1",
       "text": "<silent>tilted her head and raised a brow, pressing her lips tight.</silent>"
-    }]
+    }],
+    "nextSpeaker": "speaker2"
   }, {
     "entryBundles": [[{
         "speaker": "speaker2",
@@ -35,7 +36,8 @@ module.exports = {
     }, {
       "speaker": "speaker2",
       "text": "<silent>Slammed the menu on the table.</silent>"
-    }]
+    }],
+    "nextSpeaker": "speaker1"
   }, {
     "entryBundles": [[{
         "speaker": "speaker2",
@@ -53,7 +55,8 @@ module.exports = {
     }, {
       "speaker": "speaker2",
       "text": "<silent>Started tapping on the table.</silent>"
-    }]
+    }],
+    "nextSpeaker": "speaker1"
   }, {
     "entryBundles": [[{
         "speaker": "speaker2",
@@ -68,7 +71,8 @@ module.exports = {
     }, {
       "speaker": "speaker1",
       "text": "<silent>Dropped her shoulders and tried reading the last line for the third time.</silent>"
-    }]
+    }],
+    "nextSpeaker": "speaker2"
   }, {
     "entryBundles": [[{
         "speaker": "speaker2",

@@ -33,7 +33,6 @@ var Conversation = React.createClass({
     return (
       <div>
         <ConvoBlock
-          currentspeaker={currentSpeaker}
           currentnode={currentNode} />
         <ChoiceList
           currentspeaker={currentSpeaker}

@@ -105,10 +105,10 @@ function _populateCurrentNode(conversation) {
     'currentNode', 'entryBundles', priviousSpeaker]);
   var mainList = conversation.getIn(['currentNode', 'mainBundle']);
   quoteList = quoteList ?
-    mainList.concat(quoteList) : mainList;
+    quoteList.concat(mainList) : mainList;
 
   quoteList = _replaceQuoteIds(quoteList);
-  var currentSpeaker = quoteList.last().get('speaker');
+  var currentSpeaker = conversation.getIn(['currentNode', 'nextSpeaker']);
   quoteList = _replaceSpeakerIds(quoteList);
 
   var populatedNode = Immutable.Map({

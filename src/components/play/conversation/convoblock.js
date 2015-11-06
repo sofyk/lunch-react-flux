@@ -5,15 +5,15 @@ var QuoteList = require('./quotelist');
 
 var ConvoBlock = React.createClass({
   propTypes: {
-    currentspeaker: React.PropTypes.object.isRequired,
     currentnode: React.PropTypes.object.isRequired
   },
 
   render: function() {
-
+    var quoteList = this.props.currentnode.get('quoteList');
+    
     return (
       <div>
-        <QuoteList />
+        <QuoteList quotelist={quoteList} />
       </div>
     );
   }

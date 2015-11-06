@@ -14,9 +14,9 @@ module.exports = {
     }, {
       "speaker": "speaker2",
       "text": "It was a day like any day..."
-    }]
-  },
-  {
+    }],
+    "nextSpeaker": "speaker1"
+  }, {
     "entryBundles": [[{
         "speaker": "speaker1",
         "text": "What did you do at work?"
@@ -36,7 +36,8 @@ module.exports = {
     }, {
       "speaker": "speaker1",
       "text": "I worked, Jason. Just like you."
-    }]
+    }],
+    "nextSpeaker": "speaker2"
   }, {
     "entryBundles": [[{
         "speaker": "speaker1",
@@ -54,7 +55,8 @@ module.exports = {
     }, {
       "speaker": "speaker2",
       "text": "Why not work on both? You love multitasking..."
-    }]
+    }],
+    "nextSpeaker": "speaker1"
   }, {
     "entryBundles": [[{
         "speaker": "speaker2",
@@ -69,7 +71,8 @@ module.exports = {
     }, {
       "speaker": "speaker1",
       "text": "Then, obviously, I give my attention to the new project."
-    }]
+    }],
+    "nextSpeaker": "speaker2"
   }, {
     "entryBundles": [[{
       "speaker": "speaker1",
@@ -81,7 +84,8 @@ module.exports = {
     }, {
       "speaker": "speaker1",
       "text": "Because you asked me. And I'm not done with the old project. I don't even know if the new project is a sure thing or not."
-    }]
+    }],
+    "nextSpeaker": "speaker2"
   }, {
     "entryBundles": [[{
       "speaker": "speaker2",

@@ -20,9 +20,9 @@ module.exports = {
     }, {
       "speaker": "speaker1",
       "text": "I'll get the caprese."
-    }]
-  },
-  {
+    }],
+    "nextSpeaker": "speaker2"
+  }, {
     "entryBundles": [[{
         "speaker": "speaker1",
         "text": "Yeah...definitely getting the caprese."
@@ -36,7 +36,8 @@ module.exports = {
     }, {
       "speaker": "speaker2",
       "text": "Well, I don't know. It could be. Just try it."
-    }]
+    }],
+    "nextSpeaker": "speaker1"
   }, {
     "entryBundles": [[{
         "speaker": "speaker2",
@@ -63,7 +64,8 @@ module.exports = {
     }, {
       "speaker": "speaker1",
       "text": "I don't know, I'm not a cook."
-    }]
+    }],
+    "nextSpeaker": "speaker2"
   }, {
     "entryBundles": [[{
         "speaker": "speaker2",
@@ -90,7 +92,8 @@ module.exports = {
     }, {
       "speaker": "speaker2",
       "text": "Oh, their opinion? Is this a group? Was it a group voting on the quality of the caprese? And no one bothered to check out the BLT?"
-    }]
+    }],
+    "nextSpeaker": "speaker1"
   }, {
     "entryBundles": [[{
       "speaker": "speaker1",

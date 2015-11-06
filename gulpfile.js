@@ -19,6 +19,7 @@ var config = {
 		css: [
       		'node_modules/bootstrap/dist/css/bootstrap.min.css',
       		'node_modules/bootstrap/dist/css/bootstrap-theme.min.css',
+          'node_modules/bootstrap/dist/js/bootstrap.min.js',
       		'node_modules/toastr/toastr.css',
           './src/**/*.css'
     	],
@@ -61,7 +62,8 @@ gulp.task('js', function() {
 gulp.task('css', function() {
 	gulp.src(config.paths.css)
 		.pipe(concat('bundle.css'))
-		.pipe(gulp.dest(config.paths.dist + '/css'));
+		.pipe(gulp.dest(config.paths.dist + '/css'))
+    .pipe(connect.reload());
 });
 
 // Migrates images to dist folder
@@ -85,6 +87,7 @@ gulp.task('lint', function() {
 gulp.task('watch', function() {
 	gulp.watch(config.paths.html, ['html']);
 	gulp.watch(config.paths.js, ['js', 'lint']);
+  gulp.watch(config.paths.css, ['css']);
 });
 
 gulp.task('default', ['html', 'js', 'css', 'images', 'lint', 'open', 'watch']);

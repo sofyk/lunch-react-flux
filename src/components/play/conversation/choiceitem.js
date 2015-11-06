@@ -18,7 +18,7 @@ var ChoiceItem = React.createClass({
     return (
       <div className='row'>
         <button
-          className='btn btn-link'
+          className='btn-link text-left choice-link'
           onClick={this.chooseNode.bind(
             this,
             this.props.choiceitem.get('choiceIndex'))}>
