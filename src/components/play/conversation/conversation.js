@@ -3,6 +3,7 @@
 var React = require('react');
 var ConvoBlock = require('./convoblock');
 var ChoiceList = require('./choicelist');
+var StepBack = require('./stepback');
 var ConversationStore = require('../../../stores/conversationStore');
 
 var Conversation = React.createClass({
@@ -32,6 +33,7 @@ var Conversation = React.createClass({
 
     return (
       <div>
+        <StepBack />
         <ConvoBlock
           currentnode={currentNode} />
         <ChoiceList

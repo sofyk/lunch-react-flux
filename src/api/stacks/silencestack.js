@@ -9,84 +9,84 @@ module.exports = {
         "text": "..."
       }, {
         "speaker": "speaker1",
-        "text": "<silent>Took in a short breadth, and realsed it with a small sigh.</silent>"
+        "text": "<i>Took in a short breadth, and realsed it with a small sigh.</i>"
       }]],
     "mainBundle": [{
       "speaker": "speaker2",
-      "text": "<silent>Scoffed and picked up the menu scanning it with a farrowed brow.</silent>"
+      "text": "<i>Scoffed and picked up the menu scanning it with a farrowed brow.</i>"
     }, {
       "speaker": "speaker1",
-      "text": "<silent>tilted her head and raised a brow, pressing her lips tight.</silent>"
+      "text": "<i>tilted her head and raised a brow, pressing her lips tight.</i>"
     }],
     "nextSpeaker": "speaker2"
   }, {
     "entryBundles": [[{
         "speaker": "speaker2",
-        "text": "<silent>Rolled his eyes.</silent>"
+        "text": "<i>Rolled his eyes.</i>"
       }]],
     "mainBundle": [{
       "speaker": "speaker1",
-      "text": "<silent>Sighed and rested her chin on her fist.</silent>"
+      "text": "<i>Sighed and rested her chin on her fist.</i>"
     }, {
       "speaker": "speaker2",
-      "text": "<silent>Fixed a narrow gaze at her. Waiting.</silent>"
+      "text": "<i>Fixed a narrow gaze at her. Waiting.</i>"
     }, {
       "speaker": "speaker1",
-      "text": "<silent>Shook her head and lowered her eyes.</silent>"
+      "text": "<i>Shook her head and lowered her eyes.</i>"
     }, {
       "speaker": "speaker2",
-      "text": "<silent>Slammed the menu on the table.</silent>"
+      "text": "<i>Slammed the menu on the table.</i>"
     }],
     "nextSpeaker": "speaker1"
   }, {
     "entryBundles": [[{
         "speaker": "speaker2",
-        "text": "<silent>Cleared his throat, loudly.</silent>"
+        "text": "<i>Cleared his throat, loudly.</i>"
       }]],
     "mainBundle": [{
       "speaker": "speaker1",
-      "text": "<silent>Tensed up and buried herself in her menu.</silent>"
+      "text": "<i>Tensed up and buried herself in her menu.</i>"
     }, {
       "speaker": "speaker2",
-      "text": "<silent>Kept a narrow gaze at her. Still waiting.</silent>"
+      "text": "<i>Kept a narrow gaze at her. Still waiting.</i>"
     }, {
       "speaker": "speaker1",
-      "text": "<silent>Sharpened her focus on the menu.</silent>"
+      "text": "<i>Sharpened her focus on the menu.</i>"
     }, {
       "speaker": "speaker2",
-      "text": "<silent>Started tapping on the table.</silent>"
+      "text": "<i>Started tapping on the table.</i>"
     }],
     "nextSpeaker": "speaker1"
   }, {
     "entryBundles": [[{
         "speaker": "speaker2",
-        "text": "<silent>Keeps tapping on the table.</silent>"
+        "text": "<i>Keeps tapping on the table.</i>"
       }]],
     "mainBundle": [{
       "speaker": "speaker1",
-      "text": "<silent>Tightened her grip on the menu.</silent>"
+      "text": "<i>Tightened her grip on the menu.</i>"
     }, {
       "speaker": "speaker2",
-      "text": "<silent>Took in a deep breadth, and waited a bit before letting it all out.</silent>"
+      "text": "<i>Took in a deep breadth, and waited a bit before letting it all out.</i>"
     }, {
       "speaker": "speaker1",
-      "text": "<silent>Dropped her shoulders and tried reading the last line for the third time.</silent>"
+      "text": "<i>Dropped her shoulders and tried reading the last line for the third time.</i>"
     }],
     "nextSpeaker": "speaker2"
   }, {
     "entryBundles": [[{
         "speaker": "speaker2",
-        "text": "<silent>Let his gaze wonder.</silent>"
+        "text": "<i>Let his gaze wonder.</i>"
       }]],
     "mainBundle": [{
       "speaker": "speaker1",
-      "text": "<silent>Stole a look at him.</silent>"
+      "text": "<i>Stole a look at him.</i>"
     }, {
       "speaker": "speaker2",
-      "text": "<silent>Completely distracted now, didn't notice her stare.</silent>"
+      "text": "<i>Completely distracted now, didn't notice her stare.</i>"
     }, {
       "speaker": "nariator",
-      "text": "<silent>Their eyes didn't meet for the rest of lunch.</silent>"
+      "text": "<i>Their eyes didn't meet for the rest of lunch.</i>"
     }]
   }]
 };

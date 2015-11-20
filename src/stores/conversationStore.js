@@ -144,6 +144,11 @@ function _replaceSpeakerIds(quoteList) {
   return quoteList;
 }
 
+function _stepBack(conversation) {
+  // TODO: step back 
+  return conversation;
+}
+
 var ConversationStore = assign({}, EventEmitter.prototype, {
   addChangeListener: function(callback) {
     this.on(EventTypes.change, callback);
@@ -177,6 +182,11 @@ Dispatcher.register(function(action) {
       ConversationStore.emitChange();
       break;
     
+    case ActionTypes.STEP_BACK:
+      _conversation = _stepBack(_conversation);
+      ConversationStore.emitChange();
+      break;
+
     default:
       // no op
   }

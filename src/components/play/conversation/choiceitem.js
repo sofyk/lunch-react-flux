@@ -21,9 +21,9 @@ var ChoiceItem = React.createClass({
           className='btn-link text-left choice-link'
           onClick={this.chooseNode.bind(
             this,
-            this.props.choiceitem.get('choiceIndex'))}>
-          <b>[&nbsp;{this.props.choiceitem.get('text')}&nbsp;]</b>
-        </button>
+            this.props.choiceitem.get('choiceIndex'))}
+          dangerouslySetInnerHTML={{
+            __html: '<b>[&nbsp;' + this.props.choiceitem.get('text') + '&nbsp;]</b>'}} />
       </div>
     );
   }

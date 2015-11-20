@@ -68,7 +68,7 @@ module.exports = {
     "nextSpeaker": "speaker2"
   }, {
     "entryBundles": [[{
-        "speaker": "speaker2",
+        "speaker": "speaker1",
         "text": "I just want to try the caprese..."
       }]],
     "mainBundle": [{

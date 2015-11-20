@@ -14,7 +14,9 @@ var QuoteItem = React.createClass({
         <div className='col-xs-3 text-right'>
           <b>{this.props.quoteitem.getIn(['speaker', 'name'])}</b>
         </div>
-        <div className='col-xs-9 text-left'>{this.props.quoteitem.get('text')}</div>
+        <div className='col-xs-9 text-left'dangerouslySetInnerHTML={{
+            __html: this.props.quoteitem.get('text') 
+        }} />
       </div>
     );
   }
