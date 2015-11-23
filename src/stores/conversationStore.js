@@ -50,7 +50,7 @@ function _updateChoice(conversation) {
     conversation = conversation.updateIn(
       ['currentChoices'],
       function updater(val) {
-        return val.push(
+        return val.unshift(
           _getSpeakerChoice(stack.first(), key, currentSpeaker)
         );
     });
@@ -63,18 +63,20 @@ function _updateChoice(conversation) {
 
 function _choose(choiceIndex) {
   var conversation = _conversation;
-  conversation = _pushCurrentNode(conversation);
+  conversation = _pushCurrentNode(choiceIndex, conversation);
   conversation = _updateCurrentNode(choiceIndex, conversation);
+  conversation = conversation.set('lastChoice', choiceIndex);
 
   return conversation;
 }
 
-function _pushCurrentNode(conversation) {
+function _pushCurrentNode(choiceIndex, conversation) {
   var nodeId = conversation.getIn(['currentNode', 'id']);
+  var stackNodeId = choiceIndex + '-' + nodeId;
   conversation = conversation.updateIn(
     ['pathIdsStack'],
     function updater(val) {
-      return nodeId ? val.push(nodeId) : val;
+      return nodeId ? val.push(stackNodeId) : val;
     }
   );
   return conversation;
@@ -145,7 +147,40 @@ function _replaceSpeakerIds(quoteList) {
 }
 
 function _stepBack(conversation) {
-  // TODO: step back 
+  conversation = _pushBackCurrent(conversation);
+  conversation = _pullFromPathStack(conversation);
+
+  return conversation;
+}
+
+function _pushBackCurrent(conversation) {
+  var lastChoice = conversation.get('lastChoice');
+  var chosenStack =
+    conversation.getIn(['convoStacks', lastChoice]);
+  var currentNodeId =
+    conversation.getIn(['currentNode', 'id']);
+
+  chosenStack = chosenStack.unshift(currentNodeId);
+  conversation =
+    conversation.setIn(['convoStacks', lastChoice], chosenStack);
+
+  return conversation;
+}
+
+function _pullFromPathStack(conversation) {
+  // TODO
+  var pathIdsStack = conversation.get('pathIdsStack');
+  var lastInPath = pathIdsStack.first().split("-");
+
+  conversation = conversation.set('lastChoice', lastInPath[0]);
+  var chosenNode =
+    ConvoNodeStore.getConvoNodeById(lastInPath[1]);
+  conversation = conversation.set('currentNode', chosenNode);
+  conversation = _populateCurrentNode(conversation);
+
+  pathIdsStack = pathIdsStack.shift();
+  conversation = conversation.set('pathIdsStack', pathIdsStack);
+
   return conversation;
 }
 
