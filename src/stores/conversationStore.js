@@ -72,7 +72,8 @@ function _choose(choiceIndex) {
 
 function _pushCurrentNode(choiceIndex, conversation) {
   var nodeId = conversation.getIn(['currentNode', 'id']);
-  var stackNodeId = choiceIndex + '-' + nodeId;
+  var speakerId = conversation.getIn(['currentSpeaker', 'id']);
+  var stackNodeId = choiceIndex + '-' + nodeId + '-' + speakerId;
   conversation = conversation.updateIn(
     ['pathIdsStack'],
     function updater(val) {
@@ -176,6 +177,8 @@ function _pullFromPathStack(conversation) {
   var chosenNode =
     ConvoNodeStore.getConvoNodeById(lastInPath[1]);
   conversation = conversation.set('currentNode', chosenNode);
+  conversation = conversation.set('currentSpeaker',
+    SpeakerStore.getSpeakerById(lastInPath[2]));
   conversation = _populateCurrentNode(conversation);
 
   pathIdsStack = pathIdsStack.shift();
@@ -219,6 +222,8 @@ Dispatcher.register(function(action) {
     
     case ActionTypes.STEP_BACK:
       _conversation = _stepBack(_conversation);
+      _conversation = _updateChoice(_conversation);
+      _conversation = _replaceSpeakerId(_conversation, 'currentSpeaker');
       ConversationStore.emitChange();
       break;
 
