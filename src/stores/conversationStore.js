@@ -56,7 +56,11 @@ function _updateChoice(conversation) {
     });
   }
 
-  convoStacks.forEach(_addChoice, this);
+  if(currentSpeaker){
+    convoStacks.forEach(_addChoice, this);
+  }else{
+    conversation.set('currentChoices', []);
+  }
 
   return conversation;
 }
@@ -109,6 +113,7 @@ function _populateCurrentNode(conversation) {
   var mainList = conversation.getIn(['currentNode', 'mainBundle']);
   quoteList = quoteList ?
     quoteList.concat(mainList) : mainList;
+  quoteList = quoteList ? quoteList : [];
 
   quoteList = _replaceQuoteIds(quoteList);
   var currentSpeaker = conversation.getIn(['currentNode', 'nextSpeaker']);

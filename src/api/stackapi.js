@@ -51,6 +51,7 @@ var _parseData = function _parseData() {
   _conversation = _conversation.set(
     'currentNode', 
     Immutable.Map(initialstate.currentNode));
+  _createNode(initialstate.currentNode);
 
   _parseSpeakers(_getSpeakers());
 
@@ -106,7 +107,9 @@ var _createNode = function _createNode(convoNode, index, stackArray) {
   newNode = newNode.set('mainBundle', Immutable.List(convoNode.mainBundle));
   _convoNodes = _convoNodes.set(id, newNode);
 
-  stackArray[index] = id;
+  if(stackArray){
+    stackArray[index] = id;
+  }
 };
 
 var _createQuote = function _createQuote(quote, index, bundle) {

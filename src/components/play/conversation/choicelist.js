@@ -5,8 +5,8 @@ var ChoiceItem = require('./choiceitem');
 
 var ChoiceList = React.createClass({
   propTypes: {
-    currentspeaker: React.PropTypes.object.isRequired,
-    currentchoices: React.PropTypes.object.isRequired
+    currentspeaker: React.PropTypes.object,
+    currentchoices: React.PropTypes.object
   },
 
   render: function() {
@@ -16,10 +16,13 @@ var ChoiceList = React.createClass({
       );
     };
 
+    var currentspeaker = this.props.currentspeaker ?
+      this.props.currentspeaker.get('name') : '';
+
     return (
         <div>
           <div className='col-xs-3 text-right'>
-            <b>{this.props.currentspeaker.get('name')}</b>
+            <b>{currentspeaker}</b>
           </div>
           <div className='col-xs-9 text-left choicelist-body'>
             {this.props.currentchoices.map(createChoiceItem, this)}

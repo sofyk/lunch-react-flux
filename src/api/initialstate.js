@@ -1,6 +1,12 @@
 module.exports = {
   initialState: {
     currentSpeaker: 'speaker1',
-    currentNode: {quoteList: []}
+    currentNode: {
+    	id: 'START',
+    	nextSpeaker: 'speaker1',
+    	entryBundles: [],
+    	mainBundle: [],
+    	quoteList: []
+    }
   } 
 };
