@@ -81,12 +81,16 @@ var _parseStack = function _parseStack(stackArray) {
 };
 
 var _createNode = function _createNode(convoNode, index, stackArray) {
-  if (convoNode.id && 
-      _convoNodes.get(convoNode.id)) {
+  var id = convoNode.id;
+  
+  if (id && _convoNodes.get(id)) {
     return;
   }
-
-  var id = (+new Date() + Math.floor(Math.random() * 999999)).toString(36);
+  
+  if (!id) {
+    id = (+new Date() + Math.floor(Math.random() * 999999)).toString(36);
+  }
+  
   var newNode = Immutable.Map({
     id: id,
     entryBundles: Immutable.Map({}),

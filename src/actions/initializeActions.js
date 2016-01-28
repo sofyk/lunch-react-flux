@@ -12,9 +12,9 @@ var InitializeActions = {
 			actionType: ActionTypes.INITIALIZE,
 			initialData: {
 				conversation: StackApi.getConversation(),
-		        convoNodes: StackApi.getConvoNodes(),
-		        quotes: StackApi.getQuotes(),
-		        speakers: StackApi.getSpeakers()
+        convoNodes: StackApi.getConvoNodes(),
+        quotes: StackApi.getQuotes(),
+        speakers: StackApi.getSpeakers()
 			}
 		});
 	}
