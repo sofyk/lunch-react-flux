@@ -4,7 +4,6 @@ module.exports = {
     currentNode: {
       id: 'START',
       nextSpeaker: 'speaker1',
-      entryBundles: [],
       mainBundle: [],
       quoteList: []
     }

@@ -7,5 +7,9 @@ module.exports = {
   {
     id: 'speaker2',
     name: 'Jason'
+  },
+  {
+    id: 'narrator',
+    name: ''
   }]
 };

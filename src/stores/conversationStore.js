@@ -10,189 +10,111 @@ var EventEmitter = require('events').EventEmitter;
 var Immutable = require('immutable');
 var assign = require('object-assign');
 
-var _conversation = Immutable.Map();
+var _getCurrentChoices;
+var _init;
+var _chooseNode;
+var _stepBack;
 
-function _replaceSpeakerId(map, key) {
-  var speaker = 
-    SpeakerStore.getSpeakerById(map.get(key));
+// TODO: conversation should only contain nodeId,
+// not the whole node.
+var _conversation = Immutable.Map({
+  startingSpeaker: '',
+  currentSpeaker: '',
+  currentNode: Immutable.Map({}),
+  pathIdsStack: Immutable.Stack([]),
+  convoStacks: Immutable.List([])
+});
 
-  return map.set(key, speaker);
-}
-
-function _getSpeakerChoice(nodeId, key, speaker) {
-  var node = ConvoNodeStore.getConvoNodeById(nodeId);
-  var enteryBundle = node.getIn(['entryBundles', speaker]);
-  var quoteId;
-
-  if(enteryBundle) {
-    quoteId = enteryBundle.get(0);
-  }else{
-    quoteId = node.getIn(['mainBundle', 0]);
-  }
-
-  var choice = _replaceSpeakerId(
-    QuoteStore.getQuoteById(quoteId),
-    'speaker'
+_init = function _init(conversation) {
+  var imConversation = Immutable.Map({
+    startingSpeaker: '',
+    currentSpeaker: '',
+    currentNode: '',
+    pathIdsStack: Immutable.Stack([]),
+    convoStacks: Immutable.List([])
+  });
+  imConversation = imConversation.set(
+    'startingSpeaker',
+    conversation.startingSpeaker
   );
-  choice = choice.set('choiceIndex', key);
+  imConversation = imConversation.set(
+    'currentSpeaker',
+    conversation.currentSpeaker
+  );
+  
+  imConversation = imConversation.set(
+    'currentNode',
+    conversation.currentNode
+  );
+  var convoStacks = Immutable.List([]);
+  conversation.convoStacks.forEach(function pushStack(stack, index) {
+    var imStack = Immutable.Stack(stack);
+    convoStacks = convoStacks.set(index, imStack);
+  });
+  
+  return imConversation;
+};
 
-  return choice;
-}
+_chooseNode = function _chooseNode(index){
+  var imConversation = _conversation;
+  
+  imConversation = _pushStateToStack(index, imConversation);
+  imConversation = _updateSpeakers(imConversation);
+  imConversation = _popNode(index, imConversation);
+  
+  return imConversation;
+};
 
-function _updateChoice(conversation) {
-  conversation =
-    conversation.set('currentChoices', Immutable.List([]));
-
-  var convoStacks = conversation.get('convoStacks');
-  var currentSpeaker = conversation.get('currentSpeaker');
-
-  function _addChoice(stack, key) {
-    conversation = conversation.updateIn(
-      ['currentChoices'],
-      function updater(val) {
-        return val.unshift(
-          _getSpeakerChoice(stack.first(), key, currentSpeaker)
-        );
-    });
-  }
-
-  if(currentSpeaker){
-    convoStacks.forEach(_addChoice, this);
-  }else{
-    conversation.set('currentChoices', []);
-  }
-
-  return conversation;
-}
-
-function _choose(choiceIndex) {
-  var conversation = _conversation;
-  conversation = _pushCurrentNode(choiceIndex, conversation);
-  conversation = _updateCurrentNode(choiceIndex, conversation);
-  conversation = conversation.set('lastChoice', choiceIndex);
-
-  return conversation;
-}
-
-function _pushCurrentNode(choiceIndex, conversation) {
-  var nodeId = conversation.getIn(['currentNode', 'id']);
-  var speakerId = conversation.getIn(['currentSpeaker', 'id']);
-  var stackNodeId = choiceIndex + '-' + nodeId + '-' + speakerId;
-  conversation = conversation.updateIn(
+function _pushStateToStack(index, imConversation) {
+  var stateString;
+  
+  stateString = imConversation.get('startingSpeaker');
+  stateString += '-' + imConversation.get('currentSpeaker');
+  stateString += '-' + imConversation.get('currentNode');
+  stateString += '-' + index;
+  
+  imConversation = imConversation.updateIn(
     ['pathIdsStack'],
     function updater(val) {
-      return nodeId ? val.push(stackNodeId) : val;
-    }
-  );
-  return conversation;
+      return val.push(stateString);
+    });
+  
+  return imConversation;
 }
 
-function _updateCurrentNode(choiceIndex, conversation) {
+function _updateSpeakers(imConversation) {
+  var currentSpeaker = imConversation.get('currentSpeaker');
+  var currentNodeId = imConversation.get('currentNode');
+  var currentNode = ConvoNodeStore.getConvoNodeById(currentNodeId);
+  var nextSpeaker = currentNode.get('nextSpeaker');
+  
+  imConversation = imConversation.set('staringSpeaker', currentSpeaker);
+  imConversation = imConversation.set('currentSpeaker', nextSpeaker);
+  
+  return imConversation;
+}
+
+function _popNode(index, imConversation) {
   var chosenStack =
-    conversation.getIn(['convoStacks', choiceIndex]);
+    imConversation.getIn(['convoStacks', index]);
   var chosenNode =
     ConvoNodeStore.getConvoNodeById(chosenStack.first());
-  conversation = conversation.set('currentNode', chosenNode);
-  conversation = _populateCurrentNode(conversation);
-
-  chosenStack = chosenStack.shift();
-  conversation = conversation.setIn(
-    ['convoStacks', choiceIndex],
-    chosenStack
+  imConversation = imConversation.set(
+    'currentNode',
+    chosenNode.get('id')
   );
 
-  return conversation;
-}
-
-function _populateCurrentNode(conversation) {
-
-  var nodeId = conversation.getIn(['currentNode', 'id']);
-  var priviousSpeaker = conversation.getIn(['currentSpeaker', 'id']);
-  var quoteList = conversation.getIn([
-    'currentNode', 'entryBundles', priviousSpeaker]);
-  var mainList = conversation.getIn(['currentNode', 'mainBundle']);
-  quoteList = quoteList ?
-    quoteList.concat(mainList) : mainList;
-  quoteList = quoteList ? quoteList : [];
-
-  quoteList = _replaceQuoteIds(quoteList);
-  var currentSpeaker = conversation.getIn(['currentNode', 'nextSpeaker']);
-  quoteList = _replaceSpeakerIds(quoteList);
-
-  var populatedNode = Immutable.Map({
-    id: nodeId,
-    quoteList: quoteList
-  });
-
-  conversation = conversation.set('currentNode', populatedNode);
-  conversation = conversation.set('currentSpeaker', currentSpeaker);
-
-  return conversation;
-}
-
-function _replaceQuoteIds(quoteList) {
-  var replaceQuoteId = function replaceQuoteId(quoteId, index) {
-    var quote = QuoteStore.getQuoteById(quoteId);
-    quoteList = quoteList.set(index, quote);
-  };
+  chosenStack = chosenStack.shift();
+  imConversation = imConversation.setIn(
+    ['convoStacks', index],
+    chosenStack
+  );
   
-  quoteList.forEach(replaceQuoteId, this); 
-
-  return quoteList;
-}
-
-function _replaceSpeakerIds(quoteList) {
-  var replaceSpeakerId = function replaceSpeakerId(quote, index) {
-    quote = _replaceSpeakerId(quote, 'speaker');
-    quoteList = quoteList.set(index, quote);
-  };
-  
-  quoteList.forEach(replaceSpeakerId, this); 
-
-  return quoteList;
-}
-
-function _stepBack(conversation) {
-  conversation = _pushBackCurrent(conversation);
-  conversation = _pullFromPathStack(conversation);
-
-  return conversation;
-}
-
-function _pushBackCurrent(conversation) {
-  var lastChoice = conversation.get('lastChoice');
-  var chosenStack =
-    conversation.getIn(['convoStacks', lastChoice]);
-  var currentNodeId =
-    conversation.getIn(['currentNode', 'id']);
-
-  chosenStack = chosenStack.unshift(currentNodeId);
-  conversation =
-    conversation.setIn(['convoStacks', lastChoice], chosenStack);
-
-  return conversation;
-}
-
-function _pullFromPathStack(conversation) {
-  // TODO
-  var pathIdsStack = conversation.get('pathIdsStack');
-  var lastInPath = pathIdsStack.first().split("-");
-
-  conversation = conversation.set('lastChoice', lastInPath[0]);
-  var chosenNode =
-    ConvoNodeStore.getConvoNodeById(lastInPath[1]);
-  conversation = conversation.set('currentNode', chosenNode);
-  conversation = conversation.set('currentSpeaker',
-    SpeakerStore.getSpeakerById(lastInPath[2]));
-  conversation = _populateCurrentNode(conversation);
-
-  pathIdsStack = pathIdsStack.shift();
-  conversation = conversation.set('pathIdsStack', pathIdsStack);
-
-  return conversation;
+  return imConversation;
 }
 
 var ConversationStore = assign({}, EventEmitter.prototype, {
+  // TODO: add listeners to other stores
   addChangeListener: function(callback) {
     this.on(EventTypes.change, callback);
   },
@@ -207,28 +129,26 @@ var ConversationStore = assign({}, EventEmitter.prototype, {
 
   getConversation: function() {
     return _conversation;
-  }
+  },
+  
+  getCurrentChoices: _getCurrentChoices
+  
 });
 
 Dispatcher.register(function(action) {
   switch(action.actionType) {
     case ActionTypes.INITIALIZE:
-      _conversation = _updateChoice(action.initialData.conversation);
-      _conversation = _replaceSpeakerId(_conversation, 'currentSpeaker');
+      _conversation = _init(action.initialData.conversation);
       ConversationStore.emitChange();
       break;
 
     case ActionTypes.CHOOSE_NODE:
-      _conversation = _choose(action.payload.choiceIndex);
-      _conversation = _updateChoice(_conversation);
-      _conversation = _replaceSpeakerId(_conversation, 'currentSpeaker');
+      _conversation = _chooseNode(action.payload.choiceIndex);
       ConversationStore.emitChange();
       break;
     
     case ActionTypes.STEP_BACK:
-      _conversation = _stepBack(_conversation);
-      _conversation = _updateChoice(_conversation);
-      _conversation = _replaceSpeakerId(_conversation, 'currentSpeaker');
+      _conversation = _stepBack();
       ConversationStore.emitChange();
       break;
 

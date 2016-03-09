@@ -8,16 +8,16 @@ var initialState = require('./initialstate').initialState;
 var speakers = require('./speakers').speakers;
 var Immutable = require('immutable');
 
-var _speakers = Immutable.Map([]);
-var _convoNodes = Immutable.Map([]);
-var _quotes = Immutable.Map([]);
-var _conversation = Immutable.Map({
+var _speakers = [];
+var _convoNodes = [];
+var _quotes = [];
+var _conversation = {
+  startingSpeaker: '',
   currentSpeaker: '',
-  currentNode: Immutable.Map({}),
-  currentChoices: Immutable.List([]),
-  pathIdsStack: Immutable.Stack([]),
-  convoStacks: Immutable.List([])
-});
+  currentNode: {},
+  pathIdStack: [],
+  convoStacks: []
+};
 
 var _clone = function(item) {
   return JSON.parse(JSON.stringify(item)); //return cloned copy so that the item is passed by value instead of by reference
@@ -45,13 +45,9 @@ var _getSpeakers = function _getSpeakers() {
 
 var _parseData = function _parseData() {
   var initialstate = _getInitialState();
-  _conversation = _conversation.set(
-    'currentSpeaker',
-    initialstate.currentSpeaker);
-  _conversation = _conversation.set(
-    'currentNode', 
-    Immutable.Map(initialstate.currentNode));
+  _conversation.currentSpeaker = initialstate.currentSpeaker;
   _createNode(initialstate.currentNode);
+  _conversation.currentNode = initialstate.currentNode.id;
 
   _parseSpeakers(_getSpeakers());
 
@@ -66,50 +62,44 @@ var _parseSpeakers = function _parseSpeakers(speakerArray) {
 };
 
 var _createSpeaker = function _createSpeaker(speaker) {
-  var newSpeaker = Immutable.Map(speaker);
-  _speakers = _speakers.set(speaker.id, newSpeaker);
+  var newSpeaker = {
+    id: speaker.id,
+    name: speaker.name
+  };
+  _speakers.push(newSpeaker);
 };
 
 var _parseStack = function _parseStack(stackArray) {
   stackArray.forEach(_createNode);
-  var stack = Immutable.Stack(stackArray);
-  _conversation = _conversation.updateIn(
-    ['convoStacks'],
-    function updater(val) {
-      return val.push(stack);
-  });
+  _conversation.convoStacks = stackArray;
 };
 
 var _createNode = function _createNode(convoNode, index, stackArray) {
   var id = convoNode.id;
   
-  if (id && _convoNodes.get(id)) {
-    return;
-  }
-  
   if (!id) {
     id = (+new Date() + Math.floor(Math.random() * 999999)).toString(36);
   }
   
-  var newNode = Immutable.Map({
+  var newNode = {
     id: id,
-    entryBundles: Immutable.Map({}),
-    mainBundle: Immutable.List([]),
-    nextSpeaker: convoNode.nextSpeaker
-  });
+    entryBundles: {},
+    mainBundle: [],
+    nextSpeaker: ''
+  };
 
   convoNode.entryBundles.forEach(_parseEntryBundle);
+  
   function _parseEntryBundle(entryBundle) {
     var speakerId = entryBundle[0].speaker;
     entryBundle.forEach(_createQuote);
-
-    var newEntryBundle = Immutable.List(entryBundle);
-    newNode = newNode.setIn(['entryBundles', speakerId], newEntryBundle);
+    
+    newNode.entryBundles[speakerId] = entryBundle;
   }
 
   convoNode.mainBundle.forEach(_createQuote);
-  newNode = newNode.set('mainBundle', Immutable.List(convoNode.mainBundle));
-  _convoNodes = _convoNodes.set(id, newNode);
+  newNode.mainBundle = convoNode.mainBundle;
+  _convoNodes.push(newNode);
 
   if(stackArray){
     stackArray[index] = id;
@@ -118,12 +108,12 @@ var _createNode = function _createNode(convoNode, index, stackArray) {
 
 var _createQuote = function _createQuote(quote, index, bundle) {
   var id = (+new Date() + Math.floor(Math.random() * 999999)).toString(36);
-  var newQuote = Immutable.Map({
+  var newQuote = {
     id: id,
     speaker: quote.speaker,
     text: quote.text
-  });
-  _quotes = _quotes.set(id, newQuote);
+  };
+  _quotes.push(newQuote);
   bundle[index] = id;
 };
 
